@@ -1,0 +1,45 @@
+import { getPlayers, findPlayer, getStats } from '../../Domain/Services/services.js';
+
+export async function getPlayersDTO(req, res) {
+    const players = await getPlayers();
+    res.status(200);
+    res.json(players);
+    res.end();
+    console.log("Got players");
+}
+
+export async function findPlayerDTO(req, res) {
+    let id = parseInt(req.params.id);
+    if (isNaN(id)) {
+        res.status(400);
+        res.json({
+            error: "The id must be number",
+        });
+        res.end();
+        return;
+    }
+
+    const player = await findPlayer(id);
+
+    if (player == null) {
+        res.status(404);
+        res.json({
+            error: "Could not find a player with " + id,
+        });
+        res.end();
+        return;
+    }
+
+    res.status(200);
+    res.json(player);
+    res.end();
+    console.log("Got player " + req.params.id);
+}
+
+export async function getStatsDTO(req, res) {
+    let stats = await getStats();
+    res.status(200);
+    res.json(stats);
+    res.end();
+    console.log("Got stats");
+}
