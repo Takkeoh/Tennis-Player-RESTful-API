@@ -1,10 +1,9 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 import fs from 'fs';
 
-console.log(process.cwd())
 var database = JSON.parse(fs.readFileSync(process.cwd() + '/Data/headtohead.json'));
 
-const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize('sqlite::memory:', { logging: false });
 
 export const Players = sequelize.define('Players', {
     id: {
@@ -24,7 +23,7 @@ export const Players = sequelize.define('Players', {
 await sequelize.sync({ force: true });
 
 // FILL IN THE DATABASE WITH DATA
-(async _ => {
+export async function initdb() {
     for (let player of database.players) {
         const play = await Players.create({
             id: player.id,
@@ -47,4 +46,4 @@ await sequelize.sync({ force: true });
             },
         });
     }
-})();
+};

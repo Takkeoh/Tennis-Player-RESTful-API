@@ -1,4 +1,5 @@
-import { listPlayers, getPlayerById, listStats } from '../Entity/entity.js';
+import { listPlayers, getPlayerById, listStats,
+        addPlayerToDb, deletePlayerFromDb } from '../Entity/entity.js';
 
 export async function getPlayers() {
     let players = await listPlayers();
@@ -18,6 +19,7 @@ export async function getPlayers() {
             return -1;
         if (player1.data.rank > player2.data.rank)
             return 1;
+        console.warn('Two players have the same rank. Ignoring.')
         return 0;
     });
 
@@ -79,7 +81,7 @@ function getBMIMean(stats) {
     let totalBMI = stats.reduce((acc, actual) => {
         let tmp = getBMI(actual.height, actual.weight);
         if (tmp === -1) {
-            console.warn("Found invalid data, ignoring");
+            console.warn("Found invalid data. Ignoring.");
             nbOfPlayer--;
             return acc;
         }
@@ -120,4 +122,18 @@ export async function getStats() {
     result.averageHeight = getAverageHeight(stats);
 
     return result;
+}
+
+export async function addPlayer(player) {
+    let resp = await addPlayerToDb(player);
+    return resp;
+}
+
+export async function patchPlayer(id, player) {
+
+}
+
+export async function removePlayer(id) {
+    let destroyed = await deletePlayerFromDb(id);
+    return destroyed;
 }
