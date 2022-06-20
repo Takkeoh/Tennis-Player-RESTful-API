@@ -79,6 +79,32 @@ describe('Unit tests', function () {
     expect(res.statusCode).toBe(400)
   });
 
+  test('patch player bad id', async () => {
+    const res = await (await request(app).patch('/players/notanumber').send(nadal));
+    expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+    expect(res.statusCode).toBe(400)
+  });
+
+  test('patch player not found', async () => {
+    const res = await request(app).patch('/players/1');
+    expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+    expect(res.statusCode).toBe(404)
+  });
+
+  test('patch invalid player (includes id)', async () => {
+    nadal.id = 42;
+    const res = await (await request(app).patch('/players/95').send(nadal));
+    expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+    expect(res.statusCode).toBe(400)
+  });
+
+  test('patch valid player', async () => {
+    delete nadal.id;
+    const res = await (await request(app).patch('/players/95').send(nadal));
+    expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+    expect(res.statusCode).toBe(200)
+  });
+
   test('delete player bad id', async () => {
     const res = await (await request(app).delete('/players/notanumber'));
     expect(res.header['content-type']).toBe('application/json; charset=utf-8');

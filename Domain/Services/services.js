@@ -1,5 +1,5 @@
 import { listPlayers, getPlayerById, listStats,
-        addPlayerToDb, deletePlayerFromDb } from '../Entity/entity.js';
+        addPlayerToDb, updatePlayerToDb, deletePlayerFromDb } from '../Entity/entity.js';
 
 export async function getPlayers() {
     let players = await listPlayers();
@@ -130,7 +130,8 @@ export async function addPlayer(player) {
 }
 
 export async function patchPlayer(id, player) {
-
+    let resp = await updatePlayerToDb(id, player);
+    return resp;
 }
 
 export async function removePlayer(id) {

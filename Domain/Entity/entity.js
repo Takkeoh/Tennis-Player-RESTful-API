@@ -1,3 +1,4 @@
+import e from 'express';
 import { Players } from '../../Data/Model/model.js';
 
 export async function listPlayers() {
@@ -95,6 +96,19 @@ export async function addPlayerToDb(player) {
     }
     let playerdb = await Players.create(player);
     return playerdb;
+}
+
+export async function updatePlayerToDb(id, playerJSON) {
+    let player = await getPlayerById(id);
+    console.log(player);
+    if (!player)
+        return null;
+    for (let field of Object.keys(player.dataValues)) {
+        if (playerJSON[field])
+            player[field] = playerJSON[field];
+    }
+    await player.save();
+    return player.dataValues;
 }
 
 export async function deletePlayerFromDb(playerId) {

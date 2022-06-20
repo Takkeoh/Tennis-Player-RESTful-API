@@ -16,14 +16,13 @@ To run the server, simply use
 ```sh
 npm start
 ```
-
 To run the test suite, if the server is running, use
 ```sh
 npm test
 ```
-To run the test suite, if the server is not running, use
+To run the test suite, if the server is not running, use 
 ```sh
-npm start && npm test
+npm start & npm test
 ```
 
 ## Endpoints

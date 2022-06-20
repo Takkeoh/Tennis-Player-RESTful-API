@@ -70,7 +70,35 @@ export async function postPlayerDTO(req, res) {
 }
 
 export async function patchPlayerDTO(req, res) {
-
+    let id = parseInt(req.params.id);
+    if (isNaN(id)) {
+        res.status(400);
+        res.json({
+            error: "The id must be number",
+        });
+        res.end();
+        return;
+    }
+    if (req.body.id) {
+        res.status(400);
+        res.json({
+            error: "Player should not have an id",
+        });
+        res.end();
+        return;
+    }
+    let player = await patchPlayer(id, req.body);
+    if (player == null) {
+        res.status(404);
+        res.json({
+            error: "Could not find a player with " + id,
+        });
+        res.end();
+        return;
+    }
+    res.status(200);
+    res.json(player);
+    res.end();
 }
 
 export async function deletePlayerDTO(req, res) {
