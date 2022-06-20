@@ -1,0 +1,154 @@
+swagger: "2.0"
+info:
+  description: "This is a simple RESTful API"
+  version: "1.0.0"
+  title: "Tennis Player RESTful API"
+  contact:
+    email: "paul.bouteiller@epita.fr"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /players:
+    get:
+      tags:
+      - "players"
+      summary: "Get a list of all players"
+      description: ""
+      operationId: "getPlayers"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "List of all players"
+    post:
+      tags:
+      - "players"
+      summary: "Add a new player to the database"
+      description: ""
+      operationId: "addPlayer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Player that will be addded to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Players"
+      responses:
+        "400":
+          description: "Invalid input"
+  /players/{playerId}:
+    parameters:
+      - in: path
+        name: playerId
+        type: "integer"
+        required: true
+        description: Numeric ID of the player to get
+    get:
+      tags:
+      - "players"
+      summary: "Get the player with the specified id"
+      description: ""
+      operationId: "getPlayersById"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Player with id {playerId}"
+        "404":
+          description: "Player not found"
+    patch:
+      tags:
+      - "players"
+      summary: "Updates the player with the specified id"
+      description: ""
+      operationId: "patchPlayer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Player that will be addded to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Players"
+      responses:
+        "200":
+          description: "Patched player"
+        "400":
+          description: "Invalid input"
+    delete:
+      tags:
+      - "players"
+      summary: "Delete the player with the specified id from the database"
+      description: ""
+      operationId: "deletePlayer"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+        "404":
+          description: "Player not found"
+  /stats:
+    get:
+      tags:
+      - "stats"
+      summary: "Get a some cools stats about the players"
+      description: ""
+      operationId: "getStats"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Stats"
+definitions:
+  Players:
+    type: "object"
+    properties:
+      id: 
+        type: "integer"
+      firstname:
+        type: "string"
+      lastname: 
+        type: "string"
+      shortname:
+        type: "string"
+      sex:
+        type: "string"
+      country:
+        type: "object"
+        properties:
+          picture:
+            type: "string"
+          code:
+            type: "string"
+      picture:
+        type: "string"
+      data: 
+        type: "object"
+        properties:
+          rank:
+            type: "integer"
+          points:
+            type: "integer"
+          weight:
+            type: "integer"
+          height: 
+            type: "integer"
+          age:
+            type: "integer"
+          last:
+            type: "array"
+            items: 
+              type: "integer"
